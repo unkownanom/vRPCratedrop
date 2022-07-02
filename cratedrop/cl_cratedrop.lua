@@ -1,4 +1,4 @@
-local models = {"p_cargo_chute_s", "prop_drop_crate_01_set2", "titan", "s_m_m_pilot_02"} --What models the first one is the parachute and the second one is the brief case
+local models = {"p_cargo_chute_s", "sm_prop_smug_crate_s_narc", "titan", "s_m_m_pilot_02"} --What models the first one is the parachute and the second one is the brief case
 local activeCrate = nil
 local activeParachute = nil
 local crateBlip, radiusBlip = nil
@@ -117,32 +117,27 @@ AddEventHandler("crateDrop", function(c)
             local playerCoords = GetEntityCoords(PlayerPedId())
 
             if #(boxCoords - playerCoords) < 2.0 then
-                if (IsControlJustPressed(1, 51)) then
+                if IsControlJustPressed(1, 51) then
                     if IsPedInAnyVehicle(GetPlayerPed(-1), false) == false then
                         LoadAnimDict('amb@medic@standing@kneel@base')
                         LoadAnimDict('anim@gangops@facility@servers@bodysearch@')
                         TaskPlayAnim(PlayerPedId(), "amb@medic@standing@kneel@base" ,"base" ,8.0, -8.0, -1, 1, 0, false, false, false )
                         TaskPlayAnim(PlayerPedId(), "anim@gangops@facility@servers@bodysearch@" ,"player_search" ,8.0, -8.0, -1, 48, 0, false, false, false )
-                        notify("~g~Looting Crate Drop...")
-                        exports.rprogress:Start("", 10000)
+                        notify("~r~Looting Crate Drop...")
+                        FreezeEntityPosition(PlayerPedId(), true)
+                        Wait(5000)
+                        FreezeEntityPosition(PlayerPedId(), false)
                         ClearPedTasksImmediately(PlayerPedId())
                         if IsPedInAnyVehicle(GetPlayerPed(-1), false) == false then
-                            if IsPedDeadOrDying(PlayerPedId(), true) == false then
-                                TriggerServerEvent('openLootCrate', boxCoords, playerCoords)
-                                StopSound(soundID)
-                                ReleaseSoundId(soundID)
-                            else
-                                notify("~r~You are Dead!")
-                            end
+                            TriggerServerEvent('openLootCrate', boxCoords, playerCoords)
+                            StopSound(soundID)
+                            ReleaseSoundId(soundID)
                         else
-
-                        notify("~r~You cannot loot while in a Vehicle!")
+                            notify("~r~You cannot loot while in a Vehicle!")
                         end
                     else
-
                         notify("~r~You cannot loot while in a Vehicle!")
                     end
-
                 end
             end
         end
