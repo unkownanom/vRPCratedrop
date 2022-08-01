@@ -90,6 +90,6 @@ Citizen.CreateThread(function()
         TriggerClientEvent('chatMessage', -1, "^1[Wolfhill]: ^0 ", {66, 72, 245}, removeMsg, "alert")
         end)
 
-        -Wait(stayTime * 1000 + 500)
+        Wait(stayTime * 1000 + 500)
     end
 end)
